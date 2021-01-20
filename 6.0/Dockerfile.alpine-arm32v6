@@ -1,6 +1,6 @@
-FROM arm32v6/alpine:latest AS builder
+FROM alpine:3.12 AS builder
 
-RUN apk add \
+RUN apk update && apk add --no-cache \
         automake \
         autoconf \
         cargo \
@@ -55,7 +55,8 @@ RUN ./configure \
         --disable-gccmarch-native \
         --enable-ebpf \
         --enable-nfqueue \
-        --enable-hiredis
+        --enable-hiredis \
+        --enable-profiling
 
 ARG CORES=2
 
@@ -67,7 +68,7 @@ RUN make install install-conf DESTDIR=/fakeroot
 # next stage.
 RUN rm -rf /fakeroot/var
 
-FROM arm32v6/alpine:latest AS runner
+FROM alpine:3.12 AS runner
 
 RUN apk add \
         hiredis \
