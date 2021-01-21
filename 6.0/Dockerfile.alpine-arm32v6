@@ -28,6 +28,7 @@ RUN apk update && apk add --no-cache \
         py3-yaml \
         rust \
         yaml-dev \
+        shadow \
         zlib-dev
 
 ARG VERSION
