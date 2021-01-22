@@ -1,6 +1,6 @@
-FROM arm64v8/alpine:latest AS builder
+FROM alpine:3.12 AS builder
 
-RUN apk add \
+RUN apk update && apk add --no-cache \
         automake \
         autoconf \
         cargo \
@@ -67,9 +67,9 @@ RUN make install install-conf DESTDIR=/fakeroot
 # next stage.
 RUN rm -rf /fakeroot/var
 
-FROM arm64v8/alpine:latest AS runner
+FROM alpine:3.12 AS runner
 
-RUN apk add \
+RUN apk update && apk add --no-cache \
         hiredis \
         jansson \
         libcap \
@@ -86,6 +86,7 @@ RUN apk add \
         py3-yaml \
         python3 \
         yaml \
+        shadow \
         zlib
 
 COPY --from=builder /fakeroot /
